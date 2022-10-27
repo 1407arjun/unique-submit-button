@@ -25,17 +25,25 @@ a {
     }
 }
 
+#submit {
+    animation-duration: 0.2s;
+    animation-iteration-count: 1;
+    animation-timing-function: linear;
+    animation-play-state: paused;
+    animation-fill-mode: forwards;
+}
+
 @keyframes move {
     from {
         transform: translateX(0);
     }
     to {
-        transform: translateX(-300%);
+        transform: translateX(-200%);
     }
 }
 @keyframes move-back {
     from {
-        transform: translateX(-300%);
+        transform: translateX(-200%);
     }
     to {
         transform: translateX(0);

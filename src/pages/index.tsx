@@ -1,4 +1,11 @@
-import { Container, Button, Input, VStack, Center } from "@chakra-ui/react"
+import {
+    Container,
+    Button,
+    Input,
+    VStack,
+    Center,
+    Heading
+} from "@chakra-ui/react"
 import {
     FormControl,
     FormLabel,
@@ -55,7 +62,10 @@ const Home: NextPage = () => {
     return (
         <Container minH="100vh" maxW="container.sm">
             <Head />
-            <VStack p={{ base: 8, md: 16 }}>
+            <VStack p={{ base: 8, md: 16 }} spacing={4}>
+                <Heading mb={{ base: 4, md: 8 }} textAlign="center">
+                    Unique Submit Button
+                </Heading>
                 <FormControl isInvalid={isEmailError}>
                     <FormLabel>Email</FormLabel>
                     <Input

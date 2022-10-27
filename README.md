@@ -2,4 +2,4 @@
 
 Implementation of the moving "submit" button as seen on Instagram Reels
 
-![GIF of the implementation](https://user-images.githubusercontent.com/76874556/198349056-eb22ed06-2b91-40cb-827f-1117074108ca.gif)
+![GIF of the implementation](https://user-images.githubusercontent.com/76874556/198352346-e9ee2727-42f4-4598-934d-d78fe8e4973b.gif)

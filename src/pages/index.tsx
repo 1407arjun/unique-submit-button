@@ -28,7 +28,12 @@ const Home: NextPage = () => {
     const isPasswordError = password !== "" && !passwordRegex.test(password)
 
     const onHover = () => {
-        if (isEmailError || isPasswordError) {
+        if (
+            isEmailError ||
+            isPasswordError ||
+            email === "" ||
+            password === ""
+        ) {
             const button = document.querySelector(
                 "#submit"
             ) as HTMLButtonElement
@@ -52,6 +57,7 @@ const Home: NextPage = () => {
                     <Input
                         type="email"
                         value={email}
+                        autoComplete="off"
                         onChange={handleEmailChange}
                     />
                     {!isEmailError ? (
@@ -65,7 +71,7 @@ const Home: NextPage = () => {
                     <Input
                         type="password"
                         value={password}
-                        onLoad={(ev) => console.log(ev)}
+                        autoComplete="off"
                         onChange={handlePasswordChange}
                     />
                     {!isPasswordError ? (
@@ -84,7 +90,13 @@ const Home: NextPage = () => {
                     alignSelf="end"
                     size={{ base: "sm", md: "md" }}
                     onClick={() => {
-                        if (!isEmailError && !isPasswordError) alert("Success")
+                        if (
+                            email !== "" &&
+                            password !== "" &&
+                            !isEmailError &&
+                            !isPasswordError
+                        )
+                            alert("Success")
                     }}>
                     Submit
                 </Button>

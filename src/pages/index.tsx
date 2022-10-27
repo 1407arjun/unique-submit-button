@@ -1,4 +1,4 @@
-import { Center, Button, Input, VStack } from "@chakra-ui/react"
+import { Container, Button, Input, VStack, Center } from "@chakra-ui/react"
 import {
     FormControl,
     FormLabel,
@@ -14,34 +14,39 @@ const Home: NextPage = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
-    const emailRegex = "/^w+([.-]?w+)*@w+([.-]?w+)*(.w{2,3})+$/"
+    const emailRegex =
+        /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     const passwordRegex =
-        "/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/"
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
 
     const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) =>
         setEmail(e.target.value.trim())
     const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) =>
         setPassword(e.target.value.trim())
 
-    const isEmailError = email !== "" && !email.match(emailRegex)
-    const isPasswordError = password !== "" && !email.match(passwordRegex)
+    const isEmailError = email !== "" && !emailRegex.test(email)
+    const isPasswordError = password !== "" && !passwordRegex.test(password)
 
     const onHover = () => {
-        const button = document.querySelector("#submit") as HTMLButtonElement
+        if (isEmailError || isPasswordError) {
+            const button = document.querySelector(
+                "#submit"
+            ) as HTMLButtonElement
 
-        if (button) {
-            button.style.animationPlayState = "paused"
-            if (move) button.style.animationName = "move"
-            else button.style.animationName = "move-back"
-            button.style.animationPlayState = "running"
-            setMove(!move)
+            if (button) {
+                button.style.animationPlayState = "paused"
+                if (move) button.style.animationName = "move"
+                else button.style.animationName = "move-back"
+                button.style.animationPlayState = "running"
+                setMove(!move)
+            }
         }
     }
 
     return (
-        <Center minH="100vh">
+        <Container minH="100vh" maxW="container.sm">
             <Head />
-            <VStack>
+            <VStack p={{ base: 8, md: 16 }}>
                 <FormControl isInvalid={isEmailError}>
                     <FormLabel>Email</FormLabel>
                     <Input
@@ -60,23 +65,31 @@ const Home: NextPage = () => {
                     <Input
                         type="password"
                         value={password}
+                        onLoad={(ev) => console.log(ev)}
                         onChange={handlePasswordChange}
                     />
                     {!isPasswordError ? (
                         <FormHelperText>Enter your password</FormHelperText>
                     ) : (
                         <FormErrorMessage>
-                            Password should be between 6 to 16 characters and
-                            should contain at least a number, and at least a
-                            special character.
+                            Password should of at least 8 characters and should
+                            contain at least one uppercase letter, a number and
+                            a special character.
                         </FormErrorMessage>
                     )}
                 </FormControl>
-                <Button id="submit" onMouseOver={onHover}>
+                <Button
+                    id="submit"
+                    onMouseOver={onHover}
+                    alignSelf="end"
+                    size={{ base: "sm", md: "md" }}
+                    onClick={() => {
+                        if (!isEmailError && !isPasswordError) alert("Success")
+                    }}>
                     Submit
                 </Button>
             </VStack>
-        </Center>
+        </Container>
     )
 }
 

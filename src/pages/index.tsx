@@ -6,13 +6,14 @@ import {
     FormHelperText
 } from "@chakra-ui/react"
 import type { NextPage } from "next"
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, useEffect, useState } from "react"
 import Head from "../components/Head"
 
 const Home: NextPage = () => {
     const [move, setMove] = useState(true)
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [disabled, setDisabled] = useState(false)
 
     const emailRegex =
         /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -27,8 +28,11 @@ const Home: NextPage = () => {
     const isEmailError = email !== "" && !emailRegex.test(email)
     const isPasswordError = password !== "" && !passwordRegex.test(password)
 
-    const onHover = () => {
+    let timers: NodeJS.Timeout[] = []
+
+    const onHover = (check = false) => {
         if (
+            check ||
             isEmailError ||
             isPasswordError ||
             email === "" ||
@@ -85,9 +89,25 @@ const Home: NextPage = () => {
                     )}
                 </FormControl>
                 <Button
+                    onAnimationStart={() => {
+                        setDisabled(true)
+                        if (move) timers.forEach((t) => clearTimeout(t))
+                    }}
+                    onAnimationEnd={() => {
+                        setDisabled(false)
+                        if (!move)
+                            timers.push(
+                                setTimeout(() => {
+                                    if (!move) onHover(true)
+                                }, 2000)
+                            )
+                    }}
                     id="submit"
-                    onMouseOver={onHover}
+                    onMouseOver={() => {
+                        if (!disabled) onHover()
+                    }}
                     alignSelf="end"
+                    colorScheme="messenger"
                     size={{ base: "sm", md: "md" }}
                     onClick={() => {
                         if (
